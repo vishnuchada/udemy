@@ -1,3 +1,4 @@
+#!/usr/bin/python
 
 import numpy as np
 
@@ -8,49 +9,47 @@ def print_board(r1):
 ####print winner
 def print_winner(r):
     print "Winner is : ",r
+    quit()
 
 ####sweep the board horizontally for the winner
-def horizontal_check(row):
-    a = np.array(row)
+def horizontal_check(board):
+    a = np.array(board)
     if a[0,0] == a[0,1] == a[0,2] and a[0,0] != '-':
         print_winner(a[0,0])
-        quit()
     elif a[1,0] == a[1,1] == a[1,2] and a[1,0] != '-':
         print_winner(a[1,0])
-        quit()
     elif a[2,0] == a[2,1] == a[2,2] and a[2,0] != '-':
         print_winner(a[2,0])
-        quit()     
 ####sweep the board veritcally for the winner
-def vertical_check(row):
-    a = np.array(row)
+def vertical_check(board):
+    a = np.array(board)
     if a[0,0] == a[1,0] == a[2,0] and a[0,0] != '-':
         print_winner(a[1,1])
-        quit()
     elif a[0,1] == a[1,1] == a[2,1] and a[0,1] != '-':
         print_winner(a[0,1])
-        quit()
     elif a[0,2] == a[1,2] == a[2,2] and a[0,2] != '-':
         print_winner(a[0,2])
-        quit()
 ####sweep the board diagnally for the winner
-def diagonal_check(row):
-    a = np.array(row)
+def diagonal_check(board):
+    a = np.array(board)
     if a[0,0] == a[1,1] == a[2,2] and a[0,0] != '-':
         print_winner(a[0,0])
-        quit()
     elif a[0,2] == a[1,1] == a[2,0] and a[0,2] != '-':
         print_winner(a[0,1])
-        quit()
 
 ####function to annotate based of user input
-def annotate_board(ro,co,value,row):
+def annotate_board(ro,co,value,board):
     if ro <= 3 and co <= 3:
-            if row[ro-1][co-1] == '-':
-                row[ro-1][co-1] = value
+            if board[ro-1][co-1] == '-':
+                board[ro-1][co-1] = value
     else:
         print "Invalid Entry"
-   
+
+def toggle_player(player):
+    if player == 'x':
+        player = 'o'
+    else:
+        player = 'x' 
 
 ####user input from keyboard
 def tic_tac_toe():
@@ -60,26 +59,28 @@ def tic_tac_toe():
              x/o are the signatures
     '''
     ####initialize row & cells
-    row = [['-','-','-'],['-','-','-'],['-','-','-']]
+    board = [['-','-','-'],['-','-','-'],['-','-','-']]
     n = 0
+
+
+    player = raw_input("Who's starting x/o? [x]: ")
+    # Makes 'x' the default
+    if player != 'o':
+        player = 'x'
 
     ####Start taking inputs from user
     while n < 9 :
         ro = int(raw_input("Enter the row number: "))
         co = int(raw_input("Enter the col number: "))
-        value = raw_input("Enter your value: ")
-        if value == 'x' or value == 'o':
 
-            ##ANNOTATE board
-            annotate_board(ro,co,value,row)
-            print_board(row)
-            ##Logic for win
-            horizontal_check(row)
-            vertical_check(row)
-            diagonal_check(row)
-            n += 1
-        else: 
-            print "Wrong Marker, should be either - x - or  - o - "
-            break
+        ##ANNOTATE board
+        annotate_board(ro, co, player, board)
+        print_board(board)
+        ##Logic for win
+        horizontal_check(board)
+        vertical_check(board)
+        diagonal_check(board)
+        toggle_player(player)
+        n += 1
 
 tic_tac_toe()
