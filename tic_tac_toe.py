@@ -10,6 +10,7 @@ def print_winner(r):
     print "Winner is : ",r
     quit()
 
+####print that game is a draw
 def print_draw():
     print "Game is a draw"
     quit()
